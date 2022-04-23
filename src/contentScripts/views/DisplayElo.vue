@@ -27,7 +27,7 @@ async function getPlayerList() {
   try {
     const json = await axios(`https://open.faceit.com/data/v4/matches/${matchId}`, {
       headers: {
-        Authorization: 'Bearer 98e30890-7901-4303-98ee-e21a8216f845',
+        Authorization: 'Bearer ',
       },
     })
 

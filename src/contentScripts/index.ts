@@ -14,7 +14,7 @@ import quasarIconSet from 'quasar/icon-set/svg-material-icons'
   container.id = 'faceit-elo-calc-container'
   const root = document.createElement('div')
   const styleEl = document.createElement('link')
-  const shadowDOM = container.attachShadow?.({ mode: __DEV__ ? 'open' : 'closed' }) || container
+  const shadowDOM = container.attachShadow?.({ mode: 'open' }) || container
   const app = createApp(App)
   styleEl.setAttribute('rel', 'stylesheet')
   styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))

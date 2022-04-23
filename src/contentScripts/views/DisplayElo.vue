@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 
 let matchPage = true
-const players = []
+const players = ref([])
 
 const teamOneElo = ref(0)
 const teamTwoElo = ref(0)
@@ -13,7 +13,7 @@ const teamOneEloLoss = ref(0)
 const teamTwoEloGain = ref(0)
 const teamTwoEloLoss = ref(0)
 
-const refreshMatch = ref(() => {})
+const refreshMatch = ref(setInterval(() => { getPlayerList() }, 3000))
 const completedStatus = ref(['FINISHED', 'CANCELED', 'LIVE'])
 
 async function getPlayerList() {
@@ -25,28 +25,26 @@ async function getPlayerList() {
     matchPage = false
 
   try {
-    const json = await axios(`https://open.faceit.com/data/v4/matches/${matchId}`, {
+    const json = await axios(`https://api.faceit.com/match/v2/match/${matchId}`, {
       headers: {
-        Authorization: 'Bearer ',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
 
-    const response = json.data
+    const response = json.data.payload
 
-    if (!completedStatus.value.includes(response.status))
-      refreshMatch.value = setInterval(() => { getPlayerList() }, 3000)
-    else if (completedStatus.value.includes(response.status))
+    if (completedStatus.value.includes(response.status))
       clearInterval(refreshMatch.value)
 
     const teamOne = response.teams.faction1.roster
     const teamTwo = response.teams.faction2.roster
     teamOne.forEach((playerData) => {
-      getPlayerElo(playerData.player_id, 1)
-      players.push(playerData.player_id)
+      getPlayerElo(playerData.id, 1)
+      players.value.push(playerData.id)
     })
     teamTwo.forEach((playerData) => {
-      getPlayerElo(playerData.player_id, 2)
-      players.push(playerData.player_id)
+      getPlayerElo(playerData.id, 2)
+      players.value.push(playerData.id)
     })
   }
   catch (e) {
@@ -57,18 +55,21 @@ async function getPlayerList() {
 
 async function getPlayerElo(player_id, team) {
   try {
-    const json = await axios(`https://open.faceit.com/data/v4/players/${player_id}`, {
+    const json = await axios(`https://api.faceit.com/users/v1/users/${player_id}`, {
       headers: {
-        Authorization: 'Bearer 98e30890-7901-4303-98ee-e21a8216f845',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
 
-    const response = json.data
+    const response = json.data.payload
 
     if (team === 1)
       teamOneElo.value += response.games.csgo.faceit_elo
     if (team === 2)
       teamTwoElo.value += response.games.csgo.faceit_elo
+
+    if (players.value.length === 10)
+      setGainLoss()
   }
   catch (e) {
     // eslint-disable-next-line no-console
@@ -99,12 +100,6 @@ function setGainLoss() {
 
 onMounted(() => {
   getPlayerList()
-})
-watch(teamOneElo, () => {
-  setGainLoss()
-})
-watch(teamTwoElo, () => {
-  setGainLoss()
 })
 </script>
 

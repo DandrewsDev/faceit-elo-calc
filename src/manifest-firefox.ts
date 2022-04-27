@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import type { Manifest } from 'webextension-polyfill'
 import type PkgType from '../package.json'
-import { isDev, port, r } from '../scripts/utils'
+import { isDev, r } from '../scripts/utils'
 
 export async function getManifest() {
   const pkg = await fs.readJSON(r('package.json')) as typeof PkgType
@@ -9,11 +9,11 @@ export async function getManifest() {
   // update this file to update this manifest.json
   // can also be conditional based on your need
   const manifest: Manifest.WebExtensionManifest = {
-    manifest_version: 3,
+    manifest_version: 2,
     name: pkg.displayName || pkg.name,
     version: pkg.version,
     description: pkg.description,
-    action: {
+    browser_action: {
       default_icon: './assets/icon-512.png',
     },
     icons: {
@@ -21,26 +21,16 @@ export async function getManifest() {
       48: './assets/icon-512.png',
       128: './assets/icon-512.png',
     },
-    permissions: [],
-    host_permissions: [
+    permissions: [
       'https://*.faceit.com/en/csgo/room/*',
     ],
     content_scripts: [{
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['https://*.faceit.com/en/csgo/room/*'],
       js: ['./dist/contentScripts/index.global.js'],
     }],
     web_accessible_resources: [
-      {
-        resources: ['dist/contentScripts/style.css'],
-        matches: ['<all_urls>'],
-      },
+      'dist/contentScripts/style.css',
     ],
-    content_security_policy: {
-      extension_pages: isDev
-      // this is required on dev for Vite script to load
-        ? `script-src 'self' http://localhost:${port}; object-src 'self' http://localhost:${port}`
-        : 'script-src \'self\'; object-src \'self\'',
-    },
   }
 
   if (isDev) {

@@ -1,10 +1,10 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
+import imgUrl from '../../assets/calculate.svg'
 
 let matchPage = true
 const players = ref([])
-
 const teamOneElo = ref(0)
 const teamTwoElo = ref(0)
 
@@ -13,7 +13,7 @@ const teamOneEloLoss = ref(0)
 const teamTwoEloGain = ref(0)
 const teamTwoEloLoss = ref(0)
 
-const refreshMatch = ref(setInterval(() => { getPlayerList() }, 3000))
+const refreshMatch = ref(setInterval(() => { getPlayerList() }, 5000))
 const completedStatus = ref(['FINISHED', 'CANCELED', 'LIVE'])
 
 async function getPlayerList() {
@@ -97,7 +97,12 @@ function setGainLoss() {
   teamTwoEloGain.value = Math.abs(teamOneInfo.loss)
   teamTwoEloLoss.value = Math.abs(teamOneInfo.gain)
 }
-
+function refreshEloCalc() {
+  players.value = []
+  teamOneElo.value = 0
+  teamTwoElo.value = 0
+  getPlayerList()
+}
 onMounted(() => {
   getPlayerList()
 })
@@ -105,6 +110,7 @@ onMounted(() => {
 
 <template>
   <div class="elo_calc_parent">
+    <img class="elo_calc_refresh" :src="imgUrl" alt="calculate elo" @click="refreshEloCalc">
     <div id="team_one_elo_info" class="team_elo_display team_one">
       Elo Gain: {{ teamOneEloGain }} | Elo Loss: {{ teamOneEloLoss }}
     </div>
@@ -128,5 +134,14 @@ onMounted(() => {
 }
 .elo_calc_parent {
   padding-top: .5em
+}
+.elo_calc_refresh {
+  height: 18px;
+  width: 18px;
+  fill: white;
+}
+.mps_pop_over_window {
+  color: #26A69A;
+  background-color: #C10015;
 }
 </style>

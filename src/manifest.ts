@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import type { Manifest } from 'webextension-polyfill'
 import type PkgType from '../package.json'
-import { isDev, port, r } from '../scripts/utils'
+import { isDev, r } from '../scripts/utils'
 
 export async function getManifest() {
   const pkg = await fs.readJSON(r('package.json')) as typeof PkgType
@@ -26,21 +26,15 @@ export async function getManifest() {
       'https://*.faceit.com/en/csgo/room/*',
     ],
     content_scripts: [{
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['https://*.faceit.com/*'],
       js: ['./dist/contentScripts/index.global.js'],
     }],
     web_accessible_resources: [
       {
         resources: ['dist/contentScripts/style.css'],
-        matches: ['<all_urls>'],
+        matches: ['https://*.faceit.com/*'],
       },
     ],
-    content_security_policy: {
-      extension_pages: isDev
-      // this is required on dev for Vite script to load
-        ? `script-src 'self' http://localhost:${port}; object-src 'self' http://localhost:${port}`
-        : 'script-src \'self\'; object-src \'self\'',
-    },
   }
 
   if (isDev) {

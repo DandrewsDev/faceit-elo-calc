@@ -16,6 +16,11 @@ export async function getManifest() {
     browser_action: {
       default_icon: './assets/icon-512.png',
     },
+    browser_specific_settings: {
+      gecko: {
+        id: 'faceitelocalc@dandrews.net',
+      },
+    },
     icons: {
       16: './assets/icon-512.png',
       48: './assets/icon-512.png',

@@ -7,6 +7,22 @@ import quasarIconSet from 'quasar/icon-set/svg-material-icons'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
 (() => {
+  let lastUrl = location.href
+  new MutationObserver(() => {
+    const url = location.href
+    if (url !== lastUrl) {
+      lastUrl = url
+      onUrlChange()
+    }
+  }).observe(document, { subtree: true, childList: true })
+  function onUrlChange() {
+    const currentURL = window.location.pathname
+    const display = currentURL.match('en\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+    if (!display)
+      return
+    // Wait for Faceit to load and injection location to be ready.
+    waitForElm('#parasite-container')
+  }
   function waitForElm(selector: any) {
     if (document.querySelector(selector).shadowRoot && document.querySelector(selector).shadowRoot.querySelector('#MATCHROOM-OVERVIEW')) {
       embedApp()
@@ -17,7 +33,7 @@ import quasarIconSet from 'quasar/icon-set/svg-material-icons'
     }, 250)
   }
   const currentURL = window.location.pathname
-  const display = currentURL.includes('/en/csgo/room')
+  const display = currentURL.match('en\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
   if (!display)
     return
 

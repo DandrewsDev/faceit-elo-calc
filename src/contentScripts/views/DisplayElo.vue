@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
-import imgUrl from '../../assets/calculate.svg'
+import imgUrl from '../../assets/elo-refresh.png'
 
 let matchPage = true
 const players = ref([])
@@ -136,8 +136,8 @@ onMounted(() => {
   padding-top: .5em
 }
 .elo_calc_refresh {
-  height: 18px;
-  width: 18px;
+  height: 40px;
+  width: 40px;
   fill: white;
 }
 .mps_pop_over_window {

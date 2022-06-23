@@ -13,10 +13,13 @@ const teamOneEloLoss = ref(0)
 const teamTwoEloGain = ref(0)
 const teamTwoEloLoss = ref(0)
 
-const refreshMatch = ref(setInterval(() => { getPlayerList() }, 5000))
-const completedStatus = ref(['FINISHED', 'CANCELED', 'LIVE'])
+const refreshMatch = ref(setInterval(() => { getPlayerList() }, 2500))
+const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED', 'LIVE'])
 
 async function getPlayerList() {
+  players.value = []
+  teamOneElo.value = 0
+  teamTwoElo.value = 0
   const currentURL = window.location.pathname
   let matchId = ''
   if (currentURL.includes('/en/csgo/room'))
@@ -32,7 +35,6 @@ async function getPlayerList() {
     })
 
     const response = json.data.payload
-
     if (completedStatus.value.includes(response.status))
       clearInterval(refreshMatch.value)
 
@@ -98,9 +100,6 @@ function setGainLoss() {
   teamTwoEloLoss.value = Math.abs(teamOneInfo.gain)
 }
 function refreshEloCalc() {
-  players.value = []
-  teamOneElo.value = 0
-  teamTwoElo.value = 0
   getPlayerList()
 }
 onMounted(() => {

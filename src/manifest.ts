@@ -15,6 +15,7 @@ export async function getManifest() {
     description: pkg.description,
     action: {
       default_icon: './assets/icon-512.png',
+      default_popup: './dist/popup/index.html',
     },
     icons: {
       16: './assets/icon-512.png',

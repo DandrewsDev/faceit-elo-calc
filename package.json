@@ -1,7 +1,7 @@
 {
   "name": "faceit-elo-calc",
   "displayName": "Faceit Elo Calculator",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Show Elo Gain/Loss for Faceit Matches",
   "private": true,
   "scripts": {

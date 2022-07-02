@@ -16,7 +16,6 @@ const teamTwoEloLoss = ref(0)
 
 const refreshMatch = ref(setInterval(() => { getPlayerList() }, 2500))
 const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED', 'LIVE'])
-const playerEloAdded = ref(false)
 
 async function getPlayerList() {
   players.value = []
@@ -60,18 +59,21 @@ async function getPlayerList() {
 function addPlayerElo() {
   // Check settings, only display if enabled.
   // This also does not update on refresh, it's not needed and would be a performance hit.
-  if (playerEloAdded.value === true || enablePlayerElo.value === false)
+  if (enablePlayerElo.value === false)
     return
 
   // Limit starting list of elements.
   const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
-
-  for (let i = 0; i < elements.length; i++) {
+  const rosterOne = elements[2].children.roster1.querySelectorAll('.sc-jlXyuZ')
+  const rosterTwo = elements[2].children.roster2.querySelectorAll('.sc-jlXyuZ')
+  const prePickRoster = elements[2].children.info.querySelectorAll('.sc-fvShXH')
+  const playerNameDivs = [...rosterOne, ...rosterTwo, ...prePickRoster]
+  for (let i = 0; i < playerNameDivs.length; i++) {
     players.value.forEach((playerData) => {
-      elements[i].innerHTML = elements[i].innerHTML.replace(`>${playerData.nickname}<`, `>${playerData.nickname} (${playerData.elo})<`)
+      if (!playerNameDivs[i].innerText.includes('(') && !playerNameDivs[i].innerText.includes(')'))
+        playerNameDivs[i].innerText = playerNameDivs[i].innerText.replace(`${playerData.nickname}`, `${playerData.nickname} (${playerData.elo})`)
     })
   }
-  playerEloAdded.value = true
 }
 
 async function getPlayerElo(player_id, team) {

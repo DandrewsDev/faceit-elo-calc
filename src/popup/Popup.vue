@@ -22,7 +22,7 @@ const withL = 'Made with <3 by Dandrews'
         <q-toggle
           v-model="enablePlayerElo"
           color="red"
-          label="Display players current elo"
+          label="Display players current elo (Experimental)"
           left-label
         />
       </q-card-section>

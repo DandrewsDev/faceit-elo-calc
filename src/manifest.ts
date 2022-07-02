@@ -22,7 +22,9 @@ export async function getManifest() {
       48: './assets/icon-512.png',
       128: './assets/icon-512.png',
     },
-    permissions: [],
+    permissions: [
+      'storage',
+    ],
     host_permissions: [
       'https://*.faceit.com/en/csgo/room/*',
     ],

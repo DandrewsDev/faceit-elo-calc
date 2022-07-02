@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import imgUrl from '../../assets/elo-refresh.png'
+import { enablePlayerElo } from '~/logic/storage'
 
 let matchPage = true
 const players = ref([])
@@ -15,6 +16,7 @@ const teamTwoEloLoss = ref(0)
 
 const refreshMatch = ref(setInterval(() => { getPlayerList() }, 2500))
 const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED', 'LIVE'])
+const playerEloAdded = ref(false)
 
 async function getPlayerList() {
   players.value = []
@@ -42,17 +44,34 @@ async function getPlayerList() {
     const teamTwo = response.teams.faction2.roster
     teamOne.forEach((playerData) => {
       getPlayerElo(playerData.id, 1)
-      players.value.push(playerData.id)
+      players.value.push(playerData)
     })
     teamTwo.forEach((playerData) => {
       getPlayerElo(playerData.id, 2)
-      players.value.push(playerData.id)
+      players.value.push(playerData)
     })
   }
   catch (e) {
     // eslint-disable-next-line no-console
     console.log(e)
   }
+}
+
+function addPlayerElo() {
+  // Check settings, only display if enabled.
+  // This also does not update on refresh, it's not needed and would be a performance hit.
+  if (playerEloAdded.value === true || enablePlayerElo.value === false)
+    return
+
+  // Limit starting list of elements.
+  const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
+
+  for (let i = 0; i < elements.length; i++) {
+    players.value.forEach((playerData) => {
+      elements[i].innerHTML = elements[i].innerHTML.replace(`>${playerData.nickname}<`, `>${playerData.nickname} (${playerData.elo})<`)
+    })
+  }
+  playerEloAdded.value = true
 }
 
 async function getPlayerElo(player_id, team) {
@@ -70,8 +89,10 @@ async function getPlayerElo(player_id, team) {
     if (team === 2)
       teamTwoElo.value += response.games.csgo.faceit_elo
 
-    if (players.value.length === 10)
+    if (players.value.length === 10) {
       setGainLoss()
+      addPlayerElo()
+    }
   }
   catch (e) {
     // eslint-disable-next-line no-console

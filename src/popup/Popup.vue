@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Dark } from 'quasar'
+import { enablePlayerElo } from '~/logic/storage'
 Dark.set(true)
 
 const withL = 'Made with <3 by Dandrews'
@@ -17,6 +18,14 @@ const withL = 'Made with <3 by Dandrews'
         </div>
       </q-card-section>
 
+      <q-card-section>
+        <q-toggle
+          v-model="enablePlayerElo"
+          color="red"
+          label="Display players current elo"
+          left-label
+        />
+      </q-card-section>
       <q-separator dark inset />
 
       <q-card-section>

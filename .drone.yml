@@ -10,3 +10,13 @@ steps:
       - npm ci
       - npm run lint
       - npm run build
+  - name: upload
+    image: plugins/s3
+    settings:
+      bucket: faceit-elo-calculator
+      access_key:
+        from_secret: fec_access_key
+      secret_key:
+        from_secret: fec_secret_key
+      source: extension.zip
+      target: /chrome

@@ -13,7 +13,7 @@
     "build:prepare": "esno scripts/prepare.ts",
     "build:web": "vite build",
     "build:js": "vite build --config vite.config.content.ts",
-    "pack": "rimraf extension.zip && jszip-cli add extension/* -o ./extension.zip",
+    "pack": "rimraf extension.zip && jszip-cli add extension/* -o ./extension-$DRONE_REPO_BRANCH-$DRONE_BUILD_NUMBER.zip",
     "clear": "rimraf extension/dist extension/manifest.json extension.*",
     "lint": "eslint '{src,scripts}/**/*.{json,ts,js,vue}'"
   },

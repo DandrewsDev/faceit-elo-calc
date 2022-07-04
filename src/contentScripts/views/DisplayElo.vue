@@ -65,8 +65,8 @@ function addPlayerElo() {
 
   // Limit starting list of elements.
   const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
-  const rosterOne = elements[2].children.roster1.querySelectorAll('.sc-jlXyuZ')
-  const rosterTwo = elements[2].children.roster2.querySelectorAll('.sc-jlXyuZ')
+  const rosterOne = elements[2].children.roster1.querySelectorAll('.sc-eHOjnG.sc-iuvYwO.gSaBIZ.dVKwKN')
+  const rosterTwo = elements[2].children.roster2.querySelectorAll('.sc-eHOjnG.sc-iuvYwO.gSaBIZ.dVKwKN')
   const prePickRoster = elements[2].children.info.querySelectorAll('.sc-fvShXH')
   const playerNameDivs = [...rosterOne, ...rosterTwo, ...prePickRoster]
   for (let i = 0; i < playerNameDivs.length; i++) {

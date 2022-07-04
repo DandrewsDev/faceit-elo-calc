@@ -1,5 +1,4 @@
 <script setup>
-import axios from 'axios'
 import { ref } from 'vue'
 import imgUrl from '../../assets/elo-refresh.png'
 import { enablePlayerElo } from '~/logic/storage'
@@ -29,13 +28,15 @@ async function getPlayerList() {
     matchPage = false
 
   try {
-    const json = await axios(`https://api.faceit.com/match/v2/match/${matchId}`, {
-      headers: {
+    let json = await fetch(`https://api.faceit.com/match/v2/match/${matchId}`, {
+      method: 'GET',
+      headers: new Headers({
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+      }),
     })
 
-    const response = json.data.payload
+    json = await json.json()
+    const response = json.payload
     if (completedStatus.value.includes(response.status))
       clearInterval(refreshMatch.value)
 
@@ -78,13 +79,15 @@ function addPlayerElo() {
 
 async function getPlayerElo(player_id, team) {
   try {
-    const json = await axios(`https://api.faceit.com/users/v1/users/${player_id}`, {
-      headers: {
+    let json = await fetch(`https://api.faceit.com/users/v1/users/${player_id}`, {
+      method: 'GET',
+      headers: new Headers({
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+      }),
     })
 
-    const response = json.data.payload
+    json = await json.json()
+    const response = json.payload
 
     if (team === 1)
       teamOneElo.value += response.games.csgo.faceit_elo

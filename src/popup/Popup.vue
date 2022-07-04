@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Dark } from 'quasar'
 import { enablePlayerElo } from '~/logic/storage'
+// Defined in vite.config.js
+const version = APP_VERSION
 Dark.set(true)
 
 const withL = 'Made with <3 by Dandrews'
@@ -34,6 +36,7 @@ const withL = 'Made with <3 by Dandrews'
         <br>
         <p class="last-message">
           {{ withL }}
+          (v{{ version }})
         </p>
       </q-card-section>
     </q-card>

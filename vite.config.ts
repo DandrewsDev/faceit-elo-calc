@@ -105,4 +105,7 @@ export default defineConfig(({ command }) => ({
   plugins: [
     ...sharedConfig.plugins!,
   ],
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
 }))

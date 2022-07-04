@@ -107,7 +107,7 @@ async function getPlayerElo(player_id, team) {
 
 function estimateRatingChange(elo1, elo2, K = 50) {
   const eloDiff = elo2 - elo1
-  const percentage = 1 / (1 + Math.pow(10, eloDiff / 400))
+  const percentage = 1 / (1 + 10 ** (eloDiff / 400))
 
   const gain = Math.round(K * (1 - percentage))
   const loss = Math.round(K * (0 - percentage))

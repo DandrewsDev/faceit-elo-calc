@@ -4,13 +4,18 @@ type: docker
 name: default
 
 steps:
-  - name: build
+  - name: build-chrome
     image: node
     commands:
       - npm ci
       - npm run lint
       - npm run build
       - npm run pack
+  - name: build-ff
+    image: node
+    commands:
+      - npm ci
+      - npm run lint
       - npm run build:ff
       - npm run pack:ff
   - name: upload-chrome
@@ -25,6 +30,8 @@ steps:
         from_secret: fec_secret_key
       source: extension-*.*
       target: /chrome
+    depends_on:
+      - build-chrome
   - name: upload-firefox
     image: plugins/s3
     settings:
@@ -37,3 +44,15 @@ steps:
         from_secret: fec_secret_key
       source: extension_ff*.*
       target: /firefox
+    depends_on:
+      - build-ff
+  - name: discord notification
+    image: appleboy/drone-discord
+    settings:
+      webhook_id:
+        from_secret: fec_webhook_id
+      webhook_token:
+        from_secret: fec_webhook_token
+    depends_on:
+      - upload-chrome
+      - upload-firefox

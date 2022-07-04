@@ -13,6 +13,7 @@ steps:
   - name: upload
     image: plugins/s3
     settings:
+      endpoint: s3.dandrews.net
       bucket: faceit-elo-calculator
       access_key:
         from_secret: fec_access_key

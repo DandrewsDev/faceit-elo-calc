@@ -25,7 +25,7 @@ async function getPlayerList() {
   const regx = /\/[a-z]{2}\/csgo\/room/g;
 
   //if (currentURL.includes('/en/csgo/room'))
-  if (currentURL.match(regx)) {
+  if (currentURL.match(regx))
     matchId = currentURL.split('room/')[1]
   else
     matchPage = false

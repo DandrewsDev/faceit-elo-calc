@@ -15,7 +15,7 @@
     "build:prepff": "esno scripts/prepare-firefox.ts",
     "build:web": "vite build",
     "build:js": "vite build --config vite.config.content.ts",
-    "pack": "rimraf extension.zip && jszip-cli add extension/* -o ./extension-$DRONE_COMMIT_BRANCH-$DRONE_BUILD_NUMBER.zip",
+    "pack": "rimraf extension.zip && jszip-cli add extension/* -o ./extension_ch-$DRONE_COMMIT_BRANCH-$DRONE_BUILD_NUMBER.zip",
     "pack:ff": "rimraf extension.zip && jszip-cli add extension/* -o ./extension_ff-$DRONE_COMMIT_BRANCH-$DRONE_BUILD_NUMBER.zip",
     "clear": "rimraf extension/dist extension/manifest.json extension.*",
     "lint": "eslint '{src,scripts}/**/*.{json,ts,js,vue}'"

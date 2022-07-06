@@ -28,7 +28,7 @@ steps:
         from_secret: fec_access_key
       secret_key:
         from_secret: fec_secret_key
-      source: extension-*.*
+      source: extension_ch*.*
       target: /chrome
     depends_on:
       - build-chrome

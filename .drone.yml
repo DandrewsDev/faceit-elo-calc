@@ -11,13 +11,6 @@ steps:
       - npm run lint
       - npm run build
       - npm run pack
-  - name: build-ff
-    image: node
-    commands:
-      - npm ci
-      - npm run lint
-      - npm run build:ff
-      - npm run pack:ff
   - name: upload-chrome
     image: plugins/s3
     settings:
@@ -28,10 +21,19 @@ steps:
         from_secret: fec_access_key
       secret_key:
         from_secret: fec_secret_key
-      source: extension-*.*
+      source: extension_ch*.*
       target: /chrome
     depends_on:
       - build-chrome
+  - name: build-ff
+    image: node
+    commands:
+      - npm ci
+      - npm run lint
+      - npm run build:ff
+      - npm run pack:ff
+    depends_on:
+      - upload-chrome
   - name: upload-firefox
     image: plugins/s3
     settings:

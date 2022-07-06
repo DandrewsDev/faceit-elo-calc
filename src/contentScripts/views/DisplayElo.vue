@@ -22,7 +22,10 @@ async function getPlayerList() {
   teamTwoElo.value = 0
   const currentURL = window.location.pathname
   let matchId = ''
-  if (currentURL.includes('/en/csgo/room'))
+  const regx = /\/[a-z]{2}\/csgo\/room/g;
+
+  //if (currentURL.includes('/en/csgo/room'))
+  if (currentURL.match(regx)) {
     matchId = currentURL.split('room/')[1]
   else
     matchPage = false

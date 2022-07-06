@@ -17,7 +17,7 @@ import quasarIconSet from 'quasar/icon-set/svg-material-icons'
   }).observe(document, { subtree: true, childList: true })
   function onUrlChange() {
     const currentURL = window.location.pathname
-    const display = currentURL.match('en\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+    const display = currentURL.match('[a-z]{2}\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
     if (!display)
       return
     // Wait for Faceit to load and injection location to be ready.
@@ -33,7 +33,7 @@ import quasarIconSet from 'quasar/icon-set/svg-material-icons'
     }, 250)
   }
   const currentURL = window.location.pathname
-  const display = currentURL.match('en\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+  const display = currentURL.match('[a-z]{2}\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
   if (!display)
     return
 

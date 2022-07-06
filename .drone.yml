@@ -32,6 +32,8 @@ steps:
       - npm run lint
       - npm run build:ff
       - npm run pack:ff
+    depends_on:
+      - upload-chrome
   - name: upload-firefox
     image: plugins/s3
     settings:

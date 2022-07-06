@@ -140,15 +140,21 @@ onMounted(() => {
   <div class="elo_calc_parent">
     <img class="elo_calc_refresh" :src="imgUrl" alt="calculate elo" @click="refreshEloCalc">
     <div id="team_one_elo_info" class="team_elo_display team_one">
-      Elo Gain: {{ teamOneEloGain }} | Elo Loss: {{ teamOneEloLoss }}
+      Elo Gain: <span class="gain"> {{ teamOneEloGain }} </span> | Elo Loss: <span class="loss"> {{ teamOneEloLoss }} </span>
     </div>
     <div id="team_two_elo_info" class="team_elo_display team_two">
-      Elo Gain: {{ teamTwoEloGain }} | Elo Loss: {{ teamTwoEloLoss }}
+      Elo Gain: <span class="gain"> {{ teamTwoEloGain }} </span> | Elo Loss: <span class="loss"> {{ teamTwoEloLoss }} </span>
     </div>
   </div>
 </template>
 
 <style>
+.gain {
+  color: green;
+}
+.loss {
+  color: red;
+}
 .team_elo_display {
   width: 40%;
   display: inline-block;

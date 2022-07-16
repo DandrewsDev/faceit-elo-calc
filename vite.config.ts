@@ -6,7 +6,6 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import { isDev, port, r } from './scripts/utils'
 
 export const sharedConfig: UserConfig = {
@@ -21,10 +20,7 @@ export const sharedConfig: UserConfig = {
   },
   plugins: [
     Vue({
-      template: { transformAssetUrls },
-    }),
-    quasar({
-      sassVariables: 'src/quasar-variables.sass',
+      template: { },
     }),
 
     AutoImport({

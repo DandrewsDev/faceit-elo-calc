@@ -23,8 +23,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
     "@ffflorian/jszip-cli": "^3.1.6",
-    "@iconify/json": "^2.1.28",
-    "@quasar/vite-plugin": "^1.0.9",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.0.1",
     "@types/webextension-polyfill": "^0.9.0",

@@ -67,15 +67,22 @@ function addPlayerElo() {
 
   // Limit starting list of elements.
   const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
-  const rosterOne = elements[2].children.roster1.querySelectorAll('.sc-eHOjnG.sc-iuvYwO.gSaBIZ.dVKwKN')
-  const rosterTwo = elements[2].children.roster2.querySelectorAll('.sc-eHOjnG.sc-iuvYwO.gSaBIZ.dVKwKN')
-  const prePickRoster = elements[2].children.info.querySelectorAll('.sc-fvShXH')
+  const rosterOne = elements[2].children.roster1.querySelectorAll('div')
+  const rosterTwo = elements[2].children.roster2.querySelectorAll('div')
+  const prePickRoster = elements[2].children.info.querySelectorAll('div')
   const playerNameDivs = [...rosterOne, ...rosterTwo, ...prePickRoster]
-  for (let i = 0; i < playerNameDivs.length; i++) {
-    players.value.forEach((playerData) => {
-      if (!playerNameDivs[i].innerText.includes('(') && !playerNameDivs[i].innerText.includes(')'))
-        playerNameDivs[i].innerText = playerNameDivs[i].innerText.replace(`${playerData.nickname}`, `${playerData.nickname} (${playerData.elo})`)
-    })
+  for (let j = 0; j < players.value.length; j++) {
+    const playerData = players.value[j]
+    for (let i = 0; i < playerNameDivs.length; i++) {
+      if (playerNameDivs[i].innerText === playerData.nickname
+          && playerNameDivs[i].getAttribute('class')
+          && playerNameDivs[i].getAttribute('class').match(/.* .* .* .*/gm)
+          && !playerNameDivs[i].innerText.includes('(')
+          && !playerNameDivs[i].innerText.includes(')')) {
+        playerNameDivs[i].insertAdjacentText('beforeend', `(${playerData.elo})`)
+        break
+      }
+    }
   }
 }
 
@@ -149,7 +156,7 @@ onMounted(() => {
 
 <style>
 .gain {
-  color: green;
+  color: #03a403;
 }
 .loss {
   color: red;
@@ -169,8 +176,8 @@ onMounted(() => {
   padding-top: .5em
 }
 .elo_calc_refresh {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   fill: white;
 }
 .mps_pop_over_window {

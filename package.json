@@ -51,9 +51,5 @@
     "vue-demi": "^0.13.1",
     "webext-bridge": "^5.0.4",
     "webextension-polyfill": "^0.9.0"
-  },
-  "dependencies": {
-    "@quasar/extras": "^1.13.5",
-    "quasar": "^2.6.6"
   }
 }

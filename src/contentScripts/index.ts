@@ -1,9 +1,5 @@
 import { createApp } from 'vue'
-import { Quasar } from 'quasar'
 import App from './views/App.vue'
-import 'quasar/src/css/index.sass'
-// eslint-disable-next-line import/order
-import quasarIconSet from 'quasar/icon-set/svg-material-icons'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
 (() => {
@@ -59,10 +55,6 @@ import quasarIconSet from 'quasar/icon-set/svg-material-icons'
     shadowDOM.appendChild(styleEl)
     shadowDOM.appendChild(root)
     match_overview.prepend(container)
-    app.use(Quasar, {
-      plugins: {}, // import Quasar plugins and add here
-      iconSet: quasarIconSet,
-    })
     app.mount(root)
   }
 })()

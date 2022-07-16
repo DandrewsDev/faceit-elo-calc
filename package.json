@@ -1,7 +1,7 @@
 {
   "name": "faceit-elo-calc",
   "displayName": "Faceit Elo Calculator",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Show Elo Gain/Loss for Faceit Matches",
   "private": true,
   "scripts": {
@@ -23,8 +23,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
     "@ffflorian/jszip-cli": "^3.1.6",
-    "@iconify/json": "^2.1.28",
-    "@quasar/vite-plugin": "^1.0.9",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.0.1",
     "@types/webextension-polyfill": "^0.9.0",
@@ -51,9 +49,5 @@
     "vue-demi": "^0.13.1",
     "webext-bridge": "^5.0.4",
     "webextension-polyfill": "^0.9.0"
-  },
-  "dependencies": {
-    "@quasar/extras": "^1.13.5",
-    "quasar": "^2.6.6"
   }
 }

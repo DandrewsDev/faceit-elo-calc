@@ -79,7 +79,7 @@ function addPlayerElo() {
           && playerNameDivs[i].getAttribute('class').match(/.* .* .* .*/gm)
           && !playerNameDivs[i].innerText.includes('(')
           && !playerNameDivs[i].innerText.includes(')')) {
-        playerNameDivs[i].insertAdjacentText('beforeend', `(${playerData.elo})`)
+        playerNameDivs[i].insertAdjacentText('beforeend', ` (${playerData.elo})`)
         break
       }
     }
@@ -179,9 +179,5 @@ onMounted(() => {
   height: 35px;
   width: 35px;
   fill: white;
-}
-.mps_pop_over_window {
-  color: #26A69A;
-  background-color: #C10015;
 }
 </style>

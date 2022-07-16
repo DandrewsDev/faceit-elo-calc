@@ -8,7 +8,7 @@ const withL = 'Made with <3 by Dandrews'
 
 <template>
   <div class="popup-settings">
-    <q-card dark bordered class="bg-grey-9 my-card">
+    <div class="main-card">
       <div class="card-one">
         <div class="text-h6">
           Faceit Elo Calculator
@@ -19,7 +19,9 @@ const withL = 'Made with <3 by Dandrews'
       </div>
 
       <div class="card-one">
-        Display players current elo (Experimental)
+        <div class="switch-player-elo-label">
+          Display players current elo (Experimental)
+        </div>
         <label class="switch">
           <input
             v-model="enablePlayerElo"
@@ -34,13 +36,12 @@ const withL = 'Made with <3 by Dandrews'
       <div class="card-one">
         <p>Entire extension is free and opensource, check it out on <a class="github-link" href="https://github.com/DandrewsDev/faceit-elo-calc">Github.</a></p>
         <p>For support: Join the <a class="github-link" href="https://discord.gg/jwhbZC2h9W">(discord)</a> or feel free to send me an <a class="github-link" href="mailto:elo@dandrews.net">Email</a></p>
-        <br>
         <p class="last-message">
           {{ withL }}
           (v{{ version }})
         </p>
       </div>
-    </q-card>
+    </div>
   </div>
 </template>
 
@@ -49,6 +50,17 @@ const withL = 'Made with <3 by Dandrews'
   width: 20em;
   background-color: #424242;
   color:white;
+  min-width: 100px;
+  min-height: 100%;
+  font-family: Roboto,-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+  line-height: 1.5;
+  font-size: 14px;
+  border: 1px #ffffff47;
 }
 .github-link {
   color:lightcoral;
@@ -56,6 +68,10 @@ const withL = 'Made with <3 by Dandrews'
 }
 .last-message {
   margin-bottom: -.5em;
+}
+.switch-player-elo-label {
+  display: inline-block;
+  width: 80%;
 }
 
 .separator {
@@ -89,6 +105,13 @@ hr {
 .card-one {
   padding: 16px;
   position: relative;
+}
+.main-card {
+  box-shadow: 0 1px 5px #0003,0 2px 2px #00000024,0 3px 1px -2px #0000001f;
+  border-radius: 4px;
+  vertical-align: top;
+  position: relative;
+  border: 1px solid #ffffff47;
 }
 
 .switch {

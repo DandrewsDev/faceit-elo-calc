@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import imgUrl from '../../assets/elo-refresh.png'
+import PlayerLeetStats from '../../components/PlayerLeetifyStats.vue'
 import { enablePlayerElo } from '~/logic/storage'
 
 let matchPage = true
@@ -15,6 +16,8 @@ const teamTwoEloLoss = ref(0)
 
 const refreshMatch = ref(setInterval(() => { getPlayerList() }, 2500))
 const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED', 'LIVE'])
+
+const showLeetStatsPlayer = ref({})
 
 async function getPlayerList() {
   players.value = []
@@ -39,6 +42,7 @@ async function getPlayerList() {
 
     json = await json.json()
     const response = json.payload
+    console.log(response)
     if (completedStatus.value.includes(response.status))
       clearInterval(refreshMatch.value)
 
@@ -46,10 +50,12 @@ async function getPlayerList() {
     const teamTwo = response.teams.faction2.roster
     teamOne.forEach((playerData) => {
       getPlayerElo(playerData.id, 1)
+      playerData.statsDisplay = false
       players.value.push(playerData)
     })
     teamTwo.forEach((playerData) => {
       getPlayerElo(playerData.id, 2)
+      playerData.statsDisplay = false
       players.value.push(playerData)
     })
   }
@@ -80,6 +86,10 @@ function addPlayerElo() {
           && !playerNameDivs[i].innerText.includes('(')
           && !playerNameDivs[i].innerText.includes(')')) {
         playerNameDivs[i].insertAdjacentText('beforeend', ` (${playerData.elo})`)
+        playerNameDivs[i].addEventListener('click', (event) => {
+          showLeetStatsPlayer.value = playerData
+        }, false)
+        j++
         break
       }
     }
@@ -151,6 +161,12 @@ onMounted(() => {
     <div id="team_two_elo_info" class="team_elo_display team_two">
       Elo Gain: <span class="gain"> {{ teamTwoEloGain }} </span> | Elo Loss: <span class="loss"> {{ teamTwoEloLoss }} </span>
     </div>
+    <div v-if="showLeetStatsPlayer.hasOwnProperty('gameId')" class="mps_pop_over_window">
+      <div @click="showLeetStatsPlayer = {}">
+        Close
+      </div>
+      <PlayerLeetStats id="playerLeetStatsWindow" ref="playerLeetStats" :player-data="showLeetStatsPlayer" />
+    </div>
   </div>
 </template>
 
@@ -179,5 +195,17 @@ onMounted(() => {
   height: 35px;
   width: 35px;
   fill: white;
+}
+.mps_pop_over_window {
+  background-color: #181818;
+  width: 410px;
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  height: 450px;
+  z-index: 16;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.75);
+  overflow: auto;
 }
 </style>

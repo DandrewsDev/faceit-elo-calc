@@ -5,6 +5,7 @@ import Vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { isDev, port, r } from './scripts/utils'
+const envProcess = { NODE_ENV: 'production' }
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
@@ -14,7 +15,8 @@ export const sharedConfig: UserConfig = {
     },
   },
   define: {
-    __DEV__: isDev,
+    '__DEV__': isDev,
+    'process.env': JSON.stringify(envProcess),
   },
   plugins: [
     Vue({
@@ -93,6 +95,7 @@ export default defineConfig(({ command }) => ({
     ...sharedConfig.plugins!,
   ],
   define: {
-    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+    'APP_VERSION': JSON.stringify(process.env.npm_package_version),
+    'process.env': JSON.stringify(envProcess),
   },
 }))

@@ -2,8 +2,6 @@ import { dirname, relative } from 'path'
 import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { isDev, port, r } from './scripts/utils'
@@ -43,15 +41,8 @@ export const sharedConfig: UserConfig = {
       // generate `components.d.ts` for ts support with Volar
       dts: true,
       resolvers: [
-        // auto import icons
-        IconsResolver({
-          componentPrefix: '',
-        }),
       ],
     }),
-
-    // https://github.com/antfu/unplugin-icons
-    Icons(),
 
     // rewrite assets to use relative path
     {

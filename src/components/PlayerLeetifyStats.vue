@@ -48,7 +48,6 @@ async function getPlayerStats(playerGameId) {
 watch(() => props.playerData, newValue => getPlayerStats(newValue.gameId))
 onMounted(() => {
   getPlayerStats(props.playerData.gameId)
-  console.log(props.playerData)
 })
 </script>
 

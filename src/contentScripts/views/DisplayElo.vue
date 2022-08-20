@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import ChartIcon from 'vue-material-design-icons/ChartDonut.vue'
 import imgUrl from '../../assets/elo-refresh.png'
 import PlayerLeetStats from '../../components/PlayerLeetifyStats.vue'
 import { enablePlayerElo } from '~/logic/storage'
@@ -13,9 +15,15 @@ const teamOneEloGain = ref(0)
 const teamOneEloLoss = ref(0)
 const teamTwoEloGain = ref(0)
 const teamTwoEloLoss = ref(0)
+const autoRefreshCount = ref(0)
+const refreshMatch = ref(setInterval(() => {
+  autoRefreshCount.value += 1
+  getPlayerList()
+  if (autoRefreshCount.value > 150)
+    clearInterval(refreshMatch.value)
+}, 2500))
 
-const refreshMatch = ref(setInterval(() => { getPlayerList() }, 2500))
-const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED', 'LIVE'])
+const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED'])
 
 const showLeetStatsPlayer = ref({})
 
@@ -42,8 +50,7 @@ async function getPlayerList() {
 
     json = await json.json()
     const response = json.payload
-    console.log(response)
-    if (completedStatus.value.includes(response.status))
+    if (completedStatus.value.includes(response.status) || response.voting.location.pick.length > 0)
       clearInterval(refreshMatch.value)
 
     const teamOne = response.teams.faction1.roster
@@ -83,10 +90,11 @@ function addPlayerElo() {
       if (playerNameDivs[i].innerText === playerData.nickname
           && playerNameDivs[i].getAttribute('class')
           && playerNameDivs[i].getAttribute('class').match(/.* .* .* .*/gm)
+          && !playerNameDivs[i].innerText.match(/\([0-9].{2,3}\)/gm)
           && !playerNameDivs[i].innerText.includes('(')
           && !playerNameDivs[i].innerText.includes(')')) {
         playerNameDivs[i].insertAdjacentText('beforeend', ` (${playerData.elo})`)
-        playerNameDivs[i].addEventListener('click', (event) => {
+        playerNameDivs[i].parentElement.addEventListener('click', () => {
           showLeetStatsPlayer.value = playerData
         }, false)
         j++
@@ -161,10 +169,18 @@ onMounted(() => {
     <div id="team_two_elo_info" class="team_elo_display team_two">
       Elo Gain: <span class="gain"> {{ teamTwoEloGain }} </span> | Elo Loss: <span class="loss"> {{ teamTwoEloLoss }} </span>
     </div>
+    <div class="mps_pop_over_window_parent">
+      <div class="mps_icon_bg">
+        <div class="mps_icon_sub">
+          <ChartIcon />
+        </div>
+      </div>
+    </div>
     <div v-if="showLeetStatsPlayer.hasOwnProperty('gameId')" class="mps_pop_over_window">
       <div @click="showLeetStatsPlayer = {}">
-        Close
+        <CloseIcon />
       </div>
+      {{ showLeetStatsPlayer.nickname }}
       <PlayerLeetStats id="playerLeetStatsWindow" ref="playerLeetStats" :player-data="showLeetStatsPlayer" />
     </div>
   </div>
@@ -207,5 +223,46 @@ onMounted(() => {
   border-radius: 2px;
   box-shadow: 0 4px 12px 0 rgba(0,0,0,0.75);
   overflow: auto;
+}
+.mps_icon_bg {
+  position: fixed;
+  bottom: 16px;
+  right: 90px;
+  width: 48px;
+  height: 48px;
+  border-radius: 2px;
+  cursor: pointer;
+  z-index: -100;
+  -webkit-transition: width 0.2s,height 0.2s;
+  transition: width 0.2s,height 0.2s;
+  background-color: #181818;
+}
+.mps_pop_over_window_parent {
+  z-index: 16;
+  position: fixed;
+}
+.mps_icon_sub {
+  background-color: #2C2C2C;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.75);
+  cursor: pointer;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  -webkit-transition: background-color 0.2s ease-out;
+  transition: background-color 0.2s ease-out;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 </style>

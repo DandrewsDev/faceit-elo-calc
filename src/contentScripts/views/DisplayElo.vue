@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
 import imgUrl from '../../assets/elo-refresh.png'
+import PlayerLeetStats from '../../components/PlayerLeetifyStats.vue'
 import { enablePlayerElo } from '~/logic/storage'
 
 let matchPage = true
@@ -12,9 +14,17 @@ const teamOneEloGain = ref(0)
 const teamOneEloLoss = ref(0)
 const teamTwoEloGain = ref(0)
 const teamTwoEloLoss = ref(0)
+const autoRefreshCount = ref(0)
+const refreshMatch = ref(setInterval(() => {
+  autoRefreshCount.value += 1
+  getPlayerList()
+  if (autoRefreshCount.value > 150)
+    clearInterval(refreshMatch.value)
+}, 2500))
 
-const refreshMatch = ref(setInterval(() => { getPlayerList() }, 2500))
-const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED', 'LIVE'])
+const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED'])
+
+const showLeetStatsPlayer = ref({})
 
 async function getPlayerList() {
   players.value = []
@@ -39,17 +49,19 @@ async function getPlayerList() {
 
     json = await json.json()
     const response = json.payload
-    if (completedStatus.value.includes(response.status))
+    if (completedStatus.value.includes(response.status) || (response.voting && response.voting.location && response.voting.location.pick && response.voting.location.pick.length > 0))
       clearInterval(refreshMatch.value)
 
     const teamOne = response.teams.faction1.roster
     const teamTwo = response.teams.faction2.roster
     teamOne.forEach((playerData) => {
       getPlayerElo(playerData.id, 1)
+      playerData.statsDisplay = false
       players.value.push(playerData)
     })
     teamTwo.forEach((playerData) => {
       getPlayerElo(playerData.id, 2)
+      playerData.statsDisplay = false
       players.value.push(playerData)
     })
   }
@@ -67,15 +79,27 @@ function addPlayerElo() {
 
   // Limit starting list of elements.
   const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
-  const rosterOne = elements[2].children.roster1.querySelectorAll('.sc-eHOjnG.sc-iuvYwO.gSaBIZ.dVKwKN')
-  const rosterTwo = elements[2].children.roster2.querySelectorAll('.sc-eHOjnG.sc-iuvYwO.gSaBIZ.dVKwKN')
-  const prePickRoster = elements[2].children.info.querySelectorAll('.sc-fvShXH')
+  const rosterOne = elements[2].children.roster1.querySelectorAll('div')
+  const rosterTwo = elements[2].children.roster2.querySelectorAll('div')
+  const prePickRoster = elements[2].children.info.querySelectorAll('div')
   const playerNameDivs = [...rosterOne, ...rosterTwo, ...prePickRoster]
-  for (let i = 0; i < playerNameDivs.length; i++) {
-    players.value.forEach((playerData) => {
-      if (!playerNameDivs[i].innerText.includes('(') && !playerNameDivs[i].innerText.includes(')'))
-        playerNameDivs[i].innerText = playerNameDivs[i].innerText.replace(`${playerData.nickname}`, `${playerData.nickname} (${playerData.elo})`)
-    })
+  for (let j = 0; j < players.value.length; j++) {
+    const playerData = players.value[j]
+    for (let i = 0; i < playerNameDivs.length; i++) {
+      if (playerNameDivs[i].innerText === playerData.nickname
+          && playerNameDivs[i].getAttribute('class')
+          && playerNameDivs[i].getAttribute('class').match(/.* .* .* .*/gm)
+          && !playerNameDivs[i].innerText.match(/\([0-9].{2,3}\)/gm)
+          && !playerNameDivs[i].innerText.includes('(')
+          && !playerNameDivs[i].innerText.includes(')')) {
+        playerNameDivs[i].insertAdjacentText('beforeend', ` (${playerData.elo})`)
+        playerNameDivs[i].parentElement.addEventListener('click', () => {
+          showLeetStatsPlayer.value = playerData
+        }, false)
+        j++
+        break
+      }
+    }
   }
 }
 
@@ -144,12 +168,19 @@ onMounted(() => {
     <div id="team_two_elo_info" class="team_elo_display team_two">
       Elo Gain: <span class="gain"> {{ teamTwoEloGain }} </span> | Elo Loss: <span class="loss"> {{ teamTwoEloLoss }} </span>
     </div>
+    <div v-if="showLeetStatsPlayer.hasOwnProperty('gameId')" class="mps_pop_over_window">
+      <div @click="showLeetStatsPlayer = {}">
+        <CloseIcon />
+      </div>
+      {{ showLeetStatsPlayer.nickname }}
+      <PlayerLeetStats id="playerLeetStatsWindow" ref="playerLeetStats" :player-data="showLeetStatsPlayer" />
+    </div>
   </div>
 </template>
 
 <style>
 .gain {
-  color: green;
+  color: #03a403;
 }
 .loss {
   color: red;
@@ -169,12 +200,20 @@ onMounted(() => {
   padding-top: .5em
 }
 .elo_calc_refresh {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   fill: white;
 }
 .mps_pop_over_window {
-  color: #26A69A;
-  background-color: #C10015;
+  background-color: #181818;
+  width: 410px;
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  height: 450px;
+  z-index: 4000;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.75);
+  overflow: auto;
 }
 </style>

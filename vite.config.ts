@@ -2,12 +2,10 @@ import { dirname, relative } from 'path'
 import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import { isDev, port, r } from './scripts/utils'
+const envProcess = { NODE_ENV: 'production' }
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
@@ -17,14 +15,12 @@ export const sharedConfig: UserConfig = {
     },
   },
   define: {
-    __DEV__: isDev,
+    '__DEV__': isDev,
+    'process.env': JSON.stringify(envProcess),
   },
   plugins: [
     Vue({
-      template: { transformAssetUrls },
-    }),
-    quasar({
-      sassVariables: 'src/quasar-variables.sass',
+      template: { },
     }),
 
     AutoImport({
@@ -47,15 +43,8 @@ export const sharedConfig: UserConfig = {
       // generate `components.d.ts` for ts support with Volar
       dts: true,
       resolvers: [
-        // auto import icons
-        IconsResolver({
-          componentPrefix: '',
-        }),
       ],
     }),
-
-    // https://github.com/antfu/unplugin-icons
-    Icons(),
 
     // rewrite assets to use relative path
     {
@@ -106,6 +95,7 @@ export default defineConfig(({ command }) => ({
     ...sharedConfig.plugins!,
   ],
   define: {
-    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+    'APP_VERSION': JSON.stringify(process.env.npm_package_version),
+    'process.env': JSON.stringify(envProcess),
   },
 }))

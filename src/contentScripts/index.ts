@@ -44,6 +44,8 @@ import App from './views/App.vue'
     const match_overview = parasite_container.shadowRoot.querySelector('#MATCHROOM-OVERVIEW')
     if (!match_overview)
       return
+    if (match_overview.querySelector('#faceit-elo-calc-container'))
+      return
     const container = document.createElement('div')
     container.id = 'faceit-elo-calc-container'
     const root = document.createElement('div')

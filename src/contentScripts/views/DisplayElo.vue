@@ -4,6 +4,7 @@ import CloseIcon from 'vue-material-design-icons/Close.vue'
 import imgUrl from '../../assets/elo-refresh.png'
 import PlayerLeetStats from '../../components/PlayerLeetifyStats.vue'
 import { enablePlayerElo } from '~/logic/storage'
+import { enablePlayerLeetify } from '~/logic/storage'
 
 let matchPage = true
 const players = ref([])
@@ -74,7 +75,7 @@ async function getPlayerList() {
 function addPlayerElo() {
   // Check settings, only display if enabled.
   // This also does not update on refresh, it's not needed and would be a performance hit.
-  if (enablePlayerElo.value === false)
+  if (enablePlayerElo.value === false && enablePlayerLeetify.value === false)
     return
 
   // Limit starting list of elements.
@@ -92,11 +93,15 @@ function addPlayerElo() {
           && !playerNameDivs[i].innerText.match(/\([0-9].{2,3}\)/gm)
           && !playerNameDivs[i].innerText.includes('(')
           && !playerNameDivs[i].innerText.includes(')')) {
-        playerNameDivs[i].insertAdjacentText('beforeend', ` (${playerData.elo})`)
-        playerNameDivs[i].parentElement.addEventListener('click', () => {
-          showLeetStatsPlayer.value = playerData
-        }, false)
-        j++
+        if (enablePlayerLeetify.value) {
+          playerNameDivs[i].parentElement.addEventListener('click', () => {
+            showLeetStatsPlayer.value = playerData
+          }, false)
+        }
+        if (enablePlayerElo.value) {
+          playerNameDivs[i].insertAdjacentText('beforeend', ` (${playerData.elo})`)
+          j++
+        }
         break
       }
     }

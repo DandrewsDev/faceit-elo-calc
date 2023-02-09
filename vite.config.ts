@@ -82,9 +82,6 @@ export default defineConfig(({ command }) => ({
     emptyOutDir: false,
     sourcemap: isDev ? 'inline' : false,
     // https://developer.chrome.com/docs/webstore/program_policies/#:~:text=Code%20Readability%20Requirements
-    terserOptions: {
-      mangle: false,
-    },
     rollupOptions: {
       input: {
         popup: r('src/popup/index.html'),

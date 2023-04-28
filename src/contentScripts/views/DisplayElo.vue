@@ -3,8 +3,7 @@ import { ref } from 'vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 import imgUrl from '../../assets/elo-refresh.png'
 import PlayerLeetStats from '../../components/PlayerLeetifyStats.vue'
-import { enablePlayerElo } from '~/logic/storage'
-import { enablePlayerLeetify } from '~/logic/storage'
+import { enablePlayerElo, enablePlayerLeetify } from '~/logic/storage'
 
 let matchPage = true
 const players = ref([])
@@ -84,7 +83,6 @@ function addPlayerElo() {
   const rosterTwo = elements[3].children.roster2.querySelectorAll('div')
   const prePickRoster = elements[3].children.info.querySelectorAll('div')
   const playerNameDivs = [...rosterOne, ...rosterTwo, ...prePickRoster]
-  console.log(playerNameDivs);
   for (let j = 0; j < players.value.length; j++) {
     const playerData = players.value[j]
     for (let i = 0; i < playerNameDivs.length; i++) {

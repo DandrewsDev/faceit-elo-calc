@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { enablePlayerElo } from '~/logic/storage'
-import { enablePlayerLeetify } from '~/logic/storage'
+import { enablePlayerElo, enablePlayerLeetify } from '~/logic/storage'
 // Defined in vite.config.js
 const version = APP_VERSION
 
@@ -37,8 +36,8 @@ const withL = 'Made with <3 by Dandrews'
         </div>
         <label class="switch">
           <input
-              v-model="enablePlayerLeetify"
-              type="checkbox"
+            v-model="enablePlayerLeetify"
+            type="checkbox"
           >
           <span class="slider round" />
         </label>

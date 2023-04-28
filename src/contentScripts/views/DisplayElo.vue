@@ -5,7 +5,6 @@ import imgUrl from '../../assets/elo-refresh.png'
 import PlayerLeetStats from '../../components/PlayerLeetifyStats.vue'
 import { enablePlayerElo, enablePlayerLeetify } from '~/logic/storage'
 
-let matchPage = true
 const players = ref([])
 const teamOneElo = ref(0)
 const teamTwoElo = ref(0)
@@ -37,7 +36,7 @@ async function getPlayerList() {
   if (currentURL.match(regx))
     matchId = currentURL.split('room/')[1]
   else
-    matchPage = false
+    return
 
   try {
     let json = await fetch(`https://api.faceit.com/match/v2/match/${matchId}`, {

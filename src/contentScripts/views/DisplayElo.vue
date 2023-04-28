@@ -80,10 +80,11 @@ function addPlayerElo() {
 
   // Limit starting list of elements.
   const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
-  const rosterOne = elements[2].children.roster1.querySelectorAll('div')
-  const rosterTwo = elements[2].children.roster2.querySelectorAll('div')
-  const prePickRoster = elements[2].children.info.querySelectorAll('div')
+  const rosterOne = elements[3].children.roster1.querySelectorAll('div')
+  const rosterTwo = elements[3].children.roster2.querySelectorAll('div')
+  const prePickRoster = elements[3].children.info.querySelectorAll('div')
   const playerNameDivs = [...rosterOne, ...rosterTwo, ...prePickRoster]
+  console.log(playerNameDivs);
   for (let j = 0; j < players.value.length; j++) {
     const playerData = players.value[j]
     for (let i = 0; i < playerNameDivs.length; i++) {
@@ -94,8 +95,11 @@ function addPlayerElo() {
           && !playerNameDivs[i].innerText.includes('(')
           && !playerNameDivs[i].innerText.includes(')')) {
         if (enablePlayerLeetify.value) {
-          playerNameDivs[i].parentElement.addEventListener('click', () => {
+          playerNameDivs[i].parentElement.addEventListener('mouseover', () => {
             showLeetStatsPlayer.value = playerData
+          }, false)
+          playerNameDivs[i].parentElement.addEventListener('mouseleave', () => {
+            showLeetStatsPlayer.value = {}
           }, false)
         }
         if (enablePlayerElo.value) {

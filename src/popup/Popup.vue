@@ -33,7 +33,7 @@ const withL = 'Made with <3 by Dandrews'
       </div>
       <div class="card-one">
         <div class="switch-player-elo-label">
-          Enable PLayer Leetify stats (Experimental)
+          Enable Player Leetify stats (Experimental)
         </div>
         <label class="switch">
           <input

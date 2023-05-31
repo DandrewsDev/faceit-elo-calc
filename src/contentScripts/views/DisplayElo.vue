@@ -77,7 +77,7 @@ function addPlayerElo() {
     return
 
   // Limit starting list of elements.
-  const elements = document.querySelector('#parasite-container').shadowRoot.querySelector('#MATCHROOM-OVERVIEW').children
+  const elements = document.querySelector('#parasite-container').querySelector('#MATCHROOM-OVERVIEW').children
   const rosterOne = elements[3].children.roster1.querySelectorAll('div')
   const rosterTwo = elements[3].children.roster2.querySelectorAll('div')
   const prePickRoster = elements[3].children.info.querySelectorAll('div')

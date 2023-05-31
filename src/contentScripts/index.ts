@@ -20,7 +20,7 @@ import App from './views/App.vue'
     waitForElm('#parasite-container')
   }
   function waitForElm(selector: any) {
-    if (document.querySelector(selector).shadowRoot && document.querySelector(selector).shadowRoot.querySelector('#MATCHROOM-OVERVIEW')) {
+    if (document.querySelector(selector) && document.querySelector(selector).querySelector('#MATCHROOM-OVERVIEW')) {
       embedApp()
       return
     }
@@ -39,9 +39,9 @@ import App from './views/App.vue'
   // Embed Vue JS app.
   function embedApp() {
     const parasite_container = document.querySelector('#parasite-container')
-    if (!parasite_container || !parasite_container.shadowRoot)
+    if (!parasite_container)
       return
-    const match_overview = parasite_container.shadowRoot.querySelector('#MATCHROOM-OVERVIEW')
+    const match_overview = parasite_container.querySelector('#MATCHROOM-OVERVIEW')
     if (!match_overview)
       return
     if (match_overview.querySelector('#faceit-elo-calc-container'))

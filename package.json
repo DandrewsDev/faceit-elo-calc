@@ -1,7 +1,7 @@
 {
   "name": "faceit-elo-calc",
   "displayName": "Faceit Elo Calculator",
-  "version": "0.2.11",
+  "version": "0.3.0",
   "description": "Show Elo Gain/Loss for Faceit Matches",
   "private": true,
   "scripts": {
@@ -48,6 +48,7 @@
     "webextension-polyfill": "^0.10.0"
   },
   "dependencies": {
+    "@kalimahapps/vue-popper": "^1.1.7",
     "echarts": "^5.4.2",
     "vite-plugin-package-version": "^1.0.2",
     "vue-echarts": "^6.5.5",

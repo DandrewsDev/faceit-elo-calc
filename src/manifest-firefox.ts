@@ -28,10 +28,11 @@ export async function getManifest() {
     },
     permissions: [
       'https://*.faceit.com/en/csgo/room/*',
+      'https://*.faceit.com/en/cs2/room/*',
       'storage',
     ],
     content_scripts: [{
-      matches: ['https://*.faceit.com/en/csgo/room/*'],
+      matches: ['https://*.faceit.com/en/csgo/room/*', 'https://*.faceit.com/en/cs2/room/*'],
       js: ['./dist/contentScripts/index.global.js'],
     }],
     web_accessible_resources: [

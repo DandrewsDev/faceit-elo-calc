@@ -22,7 +22,6 @@ const refreshMatch = ref(setInterval(() => {
 }, 2500))
 
 const completedStatus = ref(['ONGOING', 'READY', 'CANCELED', 'FINISHED'])
-
 const showLeetStatsPlayer = ref({})
 
 async function getPlayerList() {
@@ -31,7 +30,7 @@ async function getPlayerList() {
   teamTwoElo.value = 0
   const currentURL = window.location.pathname
   let matchId = ''
-  const regx = /\/[a-z]{2}\/csgo\/room/g
+  const regx = /\/[a-z]{2}\/cs.{1,2}\/room/g
 
   if (currentURL.match(regx))
     matchId = currentURL.split('room/')[1]
@@ -122,9 +121,9 @@ async function getPlayerElo(player_id, team) {
     const response = json.payload
 
     if (team === 1)
-      teamOneElo.value += response.games.csgo.faceit_elo
+      teamOneElo.value += response.games.cs2.faceit_elo
     if (team === 2)
-      teamTwoElo.value += response.games.csgo.faceit_elo
+      teamTwoElo.value += response.games.cs2.faceit_elo
 
     if (players.value.length === 10) {
       setGainLoss()
@@ -163,6 +162,27 @@ function refreshEloCalc() {
 onMounted(() => {
   getPlayerList()
 })
+
+function getMatchContainerClasses(matchData) {
+  let classes = 'fec_rec_player_stats_match_container'
+  if (matchData.win)
+    classes = `${classes} fec_rec_player_stats_match_container_match_won`
+  else
+    classes = `${classes} fec_rec_player_stats_match_container_match_lost`
+
+  switch (matchData.map) {
+    case 'mirage':
+      classes = `${classes} fec_rec_player_stats_match_container_match_mirage`
+      break
+    case 'inferno':
+      classes = `${classes} fec_rec_player_stats_match_container_match_inferno`
+      break
+    default:
+        // code block
+  }
+
+  return classes
+}
 </script>
 
 <template>

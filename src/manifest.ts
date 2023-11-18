@@ -27,6 +27,7 @@ export async function getManifest() {
     ],
     host_permissions: [
       'https://*.faceit.com/en/csgo/room/*',
+      'https://*.faceit.com/en/cs2/room/*',
     ],
     content_scripts: [{
       matches: ['https://*.faceit.com/*'],

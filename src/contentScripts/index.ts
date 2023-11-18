@@ -13,7 +13,7 @@ import App from './views/App.vue'
   }).observe(document, { subtree: true, childList: true })
   function onUrlChange() {
     const currentURL = window.location.pathname
-    const display = currentURL.match('[a-z]{2}\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+    const display = currentURL.match('[a-z]{2}\\/cs.{1,2}\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
     if (!display)
       return
     // Wait for Faceit to load and injection location to be ready.
@@ -29,7 +29,7 @@ import App from './views/App.vue'
     }, 250)
   }
   const currentURL = window.location.pathname
-  const display = currentURL.match('[a-z]{2}\\/csgo\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+  const display = currentURL.match('[a-z]{2}\\/cs.{1,2}\\/room\\/[1-9]-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
   if (!display)
     return
 

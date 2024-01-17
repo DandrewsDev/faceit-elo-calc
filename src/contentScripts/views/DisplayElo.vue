@@ -149,27 +149,6 @@ function refreshEloCalc() {
 onMounted(() => {
   getPlayerList()
 })
-
-function getMatchContainerClasses(matchData) {
-  let classes = 'fec_rec_player_stats_match_container'
-  if (matchData.win)
-    classes = `${classes} fec_rec_player_stats_match_container_match_won`
-  else
-    classes = `${classes} fec_rec_player_stats_match_container_match_lost`
-
-  switch (matchData.map) {
-    case 'mirage':
-      classes = `${classes} fec_rec_player_stats_match_container_match_mirage`
-      break
-    case 'inferno':
-      classes = `${classes} fec_rec_player_stats_match_container_match_inferno`
-      break
-    default:
-        // code block
-  }
-
-  return classes
-}
 </script>
 
 <template>

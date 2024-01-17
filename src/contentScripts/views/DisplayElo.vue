@@ -40,9 +40,6 @@ async function getPlayerList() {
   try {
     let json = await fetch(`https://api.faceit.com/match/v2/match/${matchId}`, {
       method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      }),
     })
 
     json = await json.json()
@@ -53,15 +50,20 @@ async function getPlayerList() {
     const teamOne = response.teams.faction1.roster
     const teamTwo = response.teams.faction2.roster
     teamOne.forEach((playerData) => {
-      getPlayerElo(playerData.id, 1)
+      updateTeamElo(playerData, 1)
       playerData.statsDisplay = false
       players.value.push(playerData)
     })
     teamTwo.forEach((playerData) => {
-      getPlayerElo(playerData.id, 2)
+      updateTeamElo(playerData, 2)
       playerData.statsDisplay = false
       players.value.push(playerData)
     })
+
+    if (players.value.length === 10) {
+      setGainLoss()
+      addPlayerElo()
+    }
   }
   catch (e) {
     // eslint-disable-next-line no-console
@@ -108,27 +110,12 @@ function addPlayerElo() {
   }
 }
 
-async function getPlayerElo(player_id, team) {
+async function updateTeamElo(player, team) {
   try {
-    let json = await fetch(`https://api.faceit.com/users/v1/users/${player_id}`, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      }),
-    })
-
-    json = await json.json()
-    const response = json.payload
-
     if (team === 1)
-      teamOneElo.value += response.games.cs2.faceit_elo
+      teamOneElo.value += player.elo
     if (team === 2)
-      teamTwoElo.value += response.games.cs2.faceit_elo
-
-    if (players.value.length === 10) {
-      setGainLoss()
-      addPlayerElo()
-    }
+      teamTwoElo.value += player.elo
   }
   catch (e) {
     // eslint-disable-next-line no-console
